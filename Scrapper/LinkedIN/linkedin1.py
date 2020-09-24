@@ -18,7 +18,7 @@ where = ["Sydney", "Melbourne", "Brisbane"]
 
 company_blacklist = pd.read_excel("/home/ritesh/Videos/Jason/Scrapper/company_blacklist.xlsx").Company.tolist()
 
-linkedin_blacklist = "Staffing & Recruiting"
+company_whitelist = pd.read_excel("/home/ritesh/Videos/Jason/Scrapper/company_whitelist.xlsx").Company.tolist()
 
 job_title, company, domain, link, industry = [],[],[],[],[]
 
@@ -35,10 +35,13 @@ headers = {
     'accept-language': 'en-US,en;q=0.9',
     }
 
-job_title, companies, domain, links, industry = [],[],[],[],[]
+job_title, companies, domain, links, industry, company_mark = [],[],[],[],[],[]
 dummy_links = []
-for what in what_keyword:
-    for city in where:
+
+_what_keyword = ["Process"]
+_where = ["Sydney"]
+for what in _what_keyword:
+    for city in _where:
         base_url = "https://www.linkedin.com/jobs/search/?geoId=104468365&keywords="
         base_url+=what.lower().replace(" ", "%20")
         base_url+="&location="+city.replace(" ", "-")
@@ -80,6 +83,25 @@ for what in what_keyword:
 
                             if Job_company in company_blacklist:
                                     print("Blacklisted----->",Job_company)
+                            elif Job_company in company_whitelist:
+                                companies.append(Job_company)                        
+                                job_title.append(Job_name)
+                                dummy_links.append(Job_link)
+                                links.append(Job_link)
+                                domain.append("LinkedIN")
+                                industry.append(indust)
+                                company_mark.append("1")
+
+                                print("*"*120)
+                                print("Whitelisted Company---------------------Whitelisted")
+                                print("Job Name------->",Job_name)
+                                print("Job Link------->",Job_link)
+                                print("Job Comp,any---->",Job_company)
+                                print("Job Industry--->",indust)
+                                print("*"*120)
+                                print()
+                                print()
+
                             else:
                                 companies.append(Job_company)                        
                                 job_title.append(Job_name)
@@ -87,6 +109,7 @@ for what in what_keyword:
                                 links.append(Job_link)
                                 domain.append("LinkedIN")
                                 industry.append(indust)
+                                company_mark.append("")
 
                                 print("*"*120)
                                 print("Job Name------->",Job_name)
@@ -110,7 +133,7 @@ print("Length of links------>",len(links))
 print("Length of domain----->",len(domain))
 print("Length of industry--->",len(industry))
 
-df = pd.DataFrame({"Job Title": job_title, "Company": companies, "Industry":industry, "Domain":domain, "Link":links})
+df = pd.DataFrame({"Job Title": job_title, "Company": companies, "company_mark":company_mark, "Industry":industry, "Domain":domain, "Link":links})
 print(df.head())
 
 df.to_excel("LinkedIN_data_1.xlsx")
