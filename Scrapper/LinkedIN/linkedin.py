@@ -10,19 +10,15 @@ from bs4 import BeautifulSoup as bs
 chrome_options = Options()
 chrome_options.add_argument("--start-maximized")
 
-driver= webdriver.Chrome(options=chrome_options, executable_path="/home/ritesh/Videos/Jason/Scrapper/chromedriver")
+driver= webdriver.Chrome(options=chrome_options, executable_path="E:\Scrapper\Scrapping\Scrapper\chromedriver.exe")
 
-what_keyword = ["Change Manager", "change", "Business Transformation", "Project Manager", "PMO", "Agility", "Agile"]
-
-
+what_keyword = ["Transformation", "Business Analyst", "Process", "Code of practice", "Regulation"]
 
 where = ["Sydney", "Melbourne", "Brisbane"]
 
-company_blacklist = pd.read_excel("/home/ritesh/Videos/Jason/Scrapper/company_blacklist.xlsx").Company.tolist()
+company_blacklist = pd.read_excel("E:\Scrapper\Scrapping\Scrapper\company_blacklist.xlsx").Company.tolist()
 
-company_whitelist = pd.read_excel("/home/ritesh/Videos/Jason/Scrapper/company_whitelist.xlsx").Company.tolist()
-
-job_title, company, domain, link, industry = [],[],[],[],[]
+company_whitelist = pd.read_excel("E:\Scrapper\Scrapping\Scrapper\company_whitelist.xlsx").Company.tolist()
 
 headers = {
     'authority': 'www.linkedin.com',
