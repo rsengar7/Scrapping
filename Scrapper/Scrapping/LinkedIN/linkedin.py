@@ -8,17 +8,30 @@ from bs4 import BeautifulSoup as bs
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
+from dotenv import load_dotenv
+
+load_dotenv()
+
+try:
+    BLACKLIST_DIR = os.environ["BLACKLIST_DIR"]
+    WHITELIST_DIR = os.environ["WHITELIST_DIR"]
+    LOGS_DIR = os.environ["LOGS_DIR"]
+    CHROME_DRIVER = os.environ["CHROME_DRIVER"]
+
+except Exception as e:
+    print("Error-------->",e)
+    sys.exit()
 
 chrome_options = Options()
 chrome_options.add_argument("--start-maximized")
 
-driver= webdriver.Chrome(options=chrome_options, executable_path="/home/ritesh/Videos/Jason/Scrapper/chromedriver")
+driver= webdriver.Chrome(options=chrome_options, executable_path=CHROME_DRIVER)
 
 where = ["Sydney", "Melbourne", "Brisbane"]
 
-company_blacklist = pd.read_excel("/home/ritesh/Videos/Jason/Scrapper/Scrapping/company_blacklist.xlsx").Company.tolist()
+company_blacklist = pd.read_excel(BLACKLIST_DIR).Company.tolist()
 
-company_whitelist = pd.read_excel("/home/ritesh/Videos/Jason/Scrapper/Scrapping/company_whitelist.xlsx").Company.tolist()
+company_whitelist = pd.read_excel(WHITELIST_DIR).Company.tolist()
 
 job_title, company, domain, link, industry = [],[],[],[],[]
 
@@ -40,7 +53,7 @@ _where = ["Sydney"]
 writers = pd.ExcelWriter('LinkedIN_data.xlsx')
 
 for title in ["Ecosystem Log", "Renforce", "Insight X"]:
-    df = pd.read_excel("/home/ritesh/Videos/Jason/Scrapper/Scrapping/"+title+".xlsx")
+    df = pd.read_excel(LOGS_DIR+""+title+".xlsx")
     what_keyword = df.Keyword.tolist()[:1]
 
     job_title, companies, domain, links, industry, company_mark = [],[],[],[],[],[]

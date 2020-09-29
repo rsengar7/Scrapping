@@ -5,19 +5,31 @@ import time
 import pandas as pd
 from bs4 import BeautifulSoup as bs
 
+from dotenv import load_dotenv
+
+load_dotenv()
+
+try:
+    BLACKLIST_DIR = os.environ["BLACKLIST_DIR"]
+    WHITELIST_DIR = os.environ["WHITELIST_DIR"]
+    LOGS_DIR = os.environ["LOGS_DIR"]
+
+except Exception as e:
+    print("Error-------->",e)
+    sys.exit()
 
 where = ["Sydney", "Melbourne", "Brisbane"]
 
-company_blacklist = pd.read_excel("/home/ritesh/Videos/Jason/Scrapper/Scrapping/company_blacklist.xlsx").Company.tolist()
+company_blacklist = pd.read_excel(BLACKLIST_DIR).Company.tolist()
 
-company_whitelist = pd.read_excel("/home/ritesh/Videos/Jason/Scrapper/Scrapping/company_whitelist.xlsx").Company.tolist()
+company_whitelist = pd.read_excel(WHITELIST_DIR).Company.tolist()
 
 _where = ["Sydney"]
 
 writers = pd.ExcelWriter('Indeed_data.xlsx')
 
 for title in ["Ecosystem Log", "Renforce", "Insight X"]:
-    df = pd.read_excel("/home/ritesh/Videos/Jason/Scrapper/Scrapping/"+title+".xlsx")
+    df = pd.read_excel(LOGS_DIR+""+title+".xlsx")
     what_keyword = df.Keyword.tolist()[:1]
 
     job_title, companies, domain, links, industry, company_mark = [],[],[],[],[],[]
