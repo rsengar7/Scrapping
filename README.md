@@ -19,7 +19,6 @@ To use Selenium for web scraping, you will need to install the web browser drive
 Once you have installed the web browser driver, you can use the following code to create a Selenium WebDriver object:
 
 ```
-Python
 from selenium import webdriver
 
 driver = webdriver.Chrome()
@@ -39,7 +38,6 @@ pip install beautifulsoup4
 Once you have installed Beautiful Soup, you can use the following code to parse a web page:
 
 ```
-Python
 from bs4 import BeautifulSoup
 
 soup = BeautifulSoup(driver.page_source, 'html.parser')
